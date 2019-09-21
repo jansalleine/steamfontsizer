@@ -32,6 +32,6 @@ So you can easily create one dirty ugly steam skin with huge fonts :-)
     ```
 1. Use steamfontsizer to create a steam.styles file
     ```
-    steamfontsizer ~/.steam/steam/resource/styles/steam.styles ~/.steam/steam/skins/myuglyskin/resource/styles/steam.styles
+    steamfontsizer -o ~/.steam/steam/skins/myuglyskin/resource/styles/steam.styles ~/.steam/steam/resource/styles/steam.styles
     ```
 1. Change the skin in Steam settings to "myuglyskin"
