@@ -18,7 +18,9 @@ So you can easily create one dirty ugly steam skin with huge fonts :-)
     -v              verbose mode
 ```
 
-## How to use example:
+## How to use examples:
+
+### Linux:
 1. Download, build and "install" steamfontsizer
     ```
     git clone https://github.com/jansalleine/steamfontsizer.git
@@ -35,3 +37,6 @@ So you can easily create one dirty ugly steam skin with huge fonts :-)
     steamfontsizer -o ~/.steam/steam/skins/myuglyskin/resource/styles/steam.styles ~/.steam/steam/resource/styles/steam.styles
     ```
 1. Change the skin in Steam settings to "myuglyskin"
+
+### Windows:
+To be honest I don't even know if it works on windows. I just provided a win32 EXE because I can ;-)
