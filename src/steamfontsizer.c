@@ -14,6 +14,8 @@ int main( int argc, char *argv[] )
     char    *outfile_nopath     = NULL;
 
     char    tempstring[1024]    = "";
+    char    *searchstring       = "font-size=";
+    char    *pointer_search     = NULL;
 
     FILE    *infile             = NULL;
     FILE    *outfile            = NULL;
@@ -23,8 +25,11 @@ int main( int argc, char *argv[] )
     int     i                   = 0;
     int     out                 = 0;
     int     verbose             = 0;
+    int     font_size           = 0;
+    int     new_font_size       = 0;
 
-    print_info();
+    char    font_size_c[3];
+    char    new_font_size_c[3];
 
     if ( ( argc == 1 ) ||
          ( strcmp( argv[1], "-h" ) == 0 ) ||
@@ -32,6 +37,7 @@ int main( int argc, char *argv[] )
          ( strcmp( argv[1], "-?" ) == 0 ) ||
          ( strcmp( argv[1], "--help" ) == 0 ) )
     {
+        print_info();
         print_help();
         exit( EXIT_SUCCESS );
     }
@@ -45,7 +51,7 @@ int main( int argc, char *argv[] )
         {
             case 'v':
                 verbose = 1;
-                printf( "\nVerbose mode\n" );
+                printf( "\n// Verbose mode\n" );
                 break;
             case 'a':
                 if ( sscanf( optarg, "%i", &addvalue) != 1 )
@@ -86,9 +92,12 @@ int main( int argc, char *argv[] )
         }
         else
         {
-            fclose( outfile );
+            outfile_nopath = basename( outfile_name );
         }
-        outfile_nopath = basename( outfile_name );
+    }
+    else
+    {
+        outfile = stdout;
     }
 
     infile_name = newstr( argv[optind] );
@@ -97,34 +106,72 @@ int main( int argc, char *argv[] )
     if ( verbose )
     {
         printf( "\n" );
-        printf( "infile filename:       %s\n", infile_nopath );
+        printf( "// infile filename:                %s\n", infile_nopath );
         if ( out )
         {
-            printf( "outfile filename:      %s\n", outfile_nopath );
+            printf( "// outfile filename:               %s\n", outfile_nopath );
         }
         else
         {
-            printf( "output to stdout\n" );
+            printf( "// output to stdout\n" );
         }
+        printf( "// value to add to font-size:      %i\n", addvalue );
+        printf( "\n" );
     }
 
     infile = fopen( infile_name, "r" );
     if ( infile == NULL )
     {
         printf( "\nError: couldn't read file \"%s\".\n", infile_name );
+        fclose( outfile );
         exit( EXIT_FAILURE );
     }
 
-    if ( fgets( tempstring, 1000, infile )!= NULL )
+    while ( fgets( tempstring, 1000, infile ) != NULL )
     {
-        if ( out )
+        i++;
+        pointer_search = strstr( tempstring, searchstring );
+        if ( pointer_search )
         {
-            fputs( tempstring, outfile );
+            printf( "=======================================================\n" );
+            printf( "%s", tempstring );
+            font_size = get_font_size_from_string( &pointer_search[10] );
+            new_font_size = font_size + addvalue;
+            if ( ( font_size / 10 ) >= 1 )
+            {
+                font_size_c[0] = (char)( ( font_size / 10 ) + 48 );
+                font_size_c[1] = (char)( font_size - ( font_size / 10 ) + 39 );
+                font_size_c[2] = '\0';
+            }
+            else
+            {
+                font_size_c[0] = (char)( font_size + 48 );
+                font_size_c[1] = '\0';
+            }
+            if ( ( new_font_size / 10 ) >= 1 )
+            {
+                new_font_size_c[0] = (char)( ( new_font_size / 10 ) + 48 );
+                new_font_size_c[1] = (char)( new_font_size - ( new_font_size / 10 ) + 39 );
+                new_font_size_c[2] = '\0';
+            }
+            else
+            {
+                new_font_size_c[0] = (char)( new_font_size + 48 );
+                new_font_size_c[1] = '\0';
+            }
+            printf( "font_size_c: %s, new_font_size_c: %s\n", font_size_c, new_font_size_c );
+            string_replace( font_size_c, new_font_size_c, tempstring );
+            if ( verbose )
+            {
+                printf( "// string with font-size found in Line %d, original size: %d, new size: %d\n", i, font_size, new_font_size );
+            }
+            printf( "%s", tempstring );
         }
         else
         {
-            puts( tempstring );
+
         }
+        fputs( tempstring, outfile );
     }
 
     if ( out )
@@ -133,6 +180,45 @@ int main( int argc, char *argv[] )
     }
     fclose( infile );
     exit( EXIT_SUCCESS );
+}
+
+int get_font_size_from_string( char *string )
+{
+    int font_size = 0;
+    int digit_l = -1;
+    int digit_r = -1;
+    int num_chars = strlen( string );
+    int i = 0;
+    int curval;
+    for ( i = 0; i < num_chars; i++ )
+    {
+        curval = (int)string[i];
+        if ( curval == 34 )
+        {
+            continue;
+        }
+        if ( curval == 32 || curval == 13 )
+        {
+            break;
+        }
+        if ( digit_l != -1 )
+        {
+            digit_r = curval;
+        }
+        else
+        {
+            digit_l = curval;
+        }
+    }
+    if ( digit_r != -1 )
+    {
+        font_size = ( 10 * ( digit_l - 48 ) ) + ( digit_r - 48 );
+    }
+    else
+    {
+        font_size = digit_l - 48;
+    }
+    return font_size;
 }
 
 // string helper functions
@@ -150,21 +236,59 @@ char *newstr( char *initial_str )
     return new_str;
 }
 
+char * string_replace( char *search, char *replace, char *string )
+{
+    char *tempString, *searchStart;
+    int len=0;
+
+
+    // preuefe ob Such-String vorhanden ist
+    searchStart = strstr(string, search);
+    if(searchStart == NULL) {
+        return string;
+    }
+
+    // Speicher reservieren
+    tempString = (char*) malloc(strlen(string) * sizeof(char));
+    if(tempString == NULL) {
+        return NULL;
+    }
+
+    // temporaere Kopie anlegen
+    strcpy(tempString, string);
+
+    // ersten Abschnitt in String setzen
+    len = searchStart - string;
+    string[len] = '\0';
+
+    // zweiten Abschnitt anhaengen
+    strcat(string, replace);
+
+    // dritten Abschnitt anhaengen
+    len += strlen(search);
+    strcat(string, (char*)tempString+len);
+
+    // Speicher freigeben
+    free(tempString);
+
+    return string;
+}
+
 // print stuff
 
 void print_info()
 {
     const char* version = VERSION;
 
-    printf( "=============================================\n" );
+    printf( "============================\n" );
     printf( "steamfontsizer - Version %s\n", version );
-    printf( "=============================================\n" );
+    printf( "============================\n" );
     printf( "\n" );
 }
 
 void print_help()
 {
-    printf( "\nUsage:\n");
+    printf( "Usage:\n");
     printf( "   steamfontsizer [OPTION(s)] [FILE]\n" );
     printf( "\n" );
     printf( "Options:\n" );
