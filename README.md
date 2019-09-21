@@ -1,7 +1,9 @@
 # steamfontsizer - Version 1.0
 
 ## Usage:
->  steamfontsizer [OPTION(s)] [FILE]
+```
+    steamfontsizer [OPTION(s)] [FILE]
+```
 
 ## Options:
 ```
