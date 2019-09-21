@@ -1,5 +1,7 @@
 # steamfontsizer - Version 1.0
 
+A simple CLI tool that adds a given number to all font-size entries in a steam.styles file.
+
 ## Usage:
 ```
     steamfontsizer [OPTION(s)] [FILE]
