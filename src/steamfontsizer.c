@@ -28,8 +28,8 @@ int main( int argc, char *argv[] )
     int     font_size           = 0;
     int     new_font_size       = 0;
 
-    char    font_size_c[3];
-    char    new_font_size_c[3];
+    char    font_size_c[12];
+    char    new_font_size_c[12];
 
     if ( ( argc == 1 ) ||
          ( strcmp( argv[1], "-h" ) == 0 ) ||
@@ -134,29 +134,9 @@ int main( int argc, char *argv[] )
         if ( pointer_search )
         {
             font_size = get_font_size_from_string( &pointer_search[10] );
+            sprintf( font_size_c, "%d", font_size );
             new_font_size = font_size + addvalue;
-            if ( ( font_size / 10 ) >= 1 )
-            {
-                font_size_c[0] = (char)( ( font_size / 10 ) + 48 );
-                font_size_c[1] = (char)( font_size - ( ( font_size / 10 ) * 10 ) + 48 );
-                font_size_c[2] = '\0';
-            }
-            else
-            {
-                font_size_c[0] = (char)( font_size + 48 );
-                font_size_c[1] = '\0';
-            }
-            if ( ( new_font_size / 10 ) >= 1 )
-            {
-                new_font_size_c[0] = (char)( ( new_font_size / 10 ) + 48 );
-                new_font_size_c[1] = (char)( new_font_size - ( ( new_font_size / 10 ) * 10 ) + 48 );
-                new_font_size_c[2] = '\0';
-            }
-            else
-            {
-                new_font_size_c[0] = (char)( new_font_size + 48 );
-                new_font_size_c[1] = '\0';
-            }
+            sprintf( new_font_size_c, "%d", new_font_size );
             string_replace( font_size_c, new_font_size_c, tempstring );
             if ( verbose )
             {
