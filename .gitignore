@@ -1,0 +1,9 @@
+bin/steamfontsizer
+src/steamfontsizer
+src/steamfontsizer-linux32
+src/steamfontsizer-linux32.o
+src/steamfontsizer-linux64
+src/steamfontsizer-linux64.o
+src/steamfontsizer-w32.exe
+src/steamfontsizer-w32.o
+src/steamfontsizer.o
