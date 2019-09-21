@@ -138,7 +138,7 @@ int main( int argc, char *argv[] )
             if ( ( font_size / 10 ) >= 1 )
             {
                 font_size_c[0] = (char)( ( font_size / 10 ) + 48 );
-                font_size_c[1] = (char)( font_size - ( font_size / 10 ) + 39 );
+                font_size_c[1] = (char)( font_size - ( ( font_size / 10 ) * 10 ) + 48 );
                 font_size_c[2] = '\0';
             }
             else
@@ -149,7 +149,7 @@ int main( int argc, char *argv[] )
             if ( ( new_font_size / 10 ) >= 1 )
             {
                 new_font_size_c[0] = (char)( ( new_font_size / 10 ) + 48 );
-                new_font_size_c[1] = (char)( new_font_size - ( new_font_size / 10 ) + 39 );
+                new_font_size_c[1] = (char)( new_font_size - ( ( new_font_size / 10 ) * 10 ) + 48 );
                 new_font_size_c[2] = '\0';
             }
             else
