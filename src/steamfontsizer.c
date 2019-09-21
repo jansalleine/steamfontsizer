@@ -133,8 +133,6 @@ int main( int argc, char *argv[] )
         pointer_search = strstr( tempstring, searchstring );
         if ( pointer_search )
         {
-            printf( "=======================================================\n" );
-            printf( "%s", tempstring );
             font_size = get_font_size_from_string( &pointer_search[10] );
             new_font_size = font_size + addvalue;
             if ( ( font_size / 10 ) >= 1 )
@@ -159,13 +157,11 @@ int main( int argc, char *argv[] )
                 new_font_size_c[0] = (char)( new_font_size + 48 );
                 new_font_size_c[1] = '\0';
             }
-            printf( "font_size_c: %s, new_font_size_c: %s\n", font_size_c, new_font_size_c );
             string_replace( font_size_c, new_font_size_c, tempstring );
             if ( verbose )
             {
                 printf( "// string with font-size found in Line %d, original size: %d, new size: %d\n", i, font_size, new_font_size );
             }
-            printf( "%s", tempstring );
         }
         else
         {
