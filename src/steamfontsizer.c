@@ -238,13 +238,13 @@ char * string_replace( char *search, char *replace, char *string )
     int len = 0;
 
     searchstart = strstr( string, search );
-    if( searchstart == NULL )
+    if ( searchstart == NULL )
     {
         return string;
     }
 
     tempstring = (char*) malloc( strlen( string ) * sizeof( char ) );
-    if( tempstring == NULL )
+    if ( tempstring == NULL )
     {
         return NULL;
     }
@@ -274,7 +274,7 @@ void print_info()
 
 void print_help()
 {
-    printf( "Usage:\n");
+    printf( "Usage:\n" );
     printf( "   steamfontsizer [OPTION(s)] [FILE]\n" );
     printf( "\n" );
     printf( "Options:\n" );
