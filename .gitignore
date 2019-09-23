@@ -7,3 +7,4 @@ src/steamfontsizer-linux64.o
 src/steamfontsizer-w32.exe
 src/steamfontsizer-w32.o
 src/steamfontsizer.o
+src/steam.styles

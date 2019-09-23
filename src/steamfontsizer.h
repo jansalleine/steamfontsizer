@@ -5,7 +5,7 @@
 
 int get_font_size_from_string( char *string );
 char *newstr( char *initial_str );
-char * string_replace( char *search, char *replace, char *string );
+char *string_replace( char *search, char *replace, char *string );
 void print_info();
 void print_help();
 

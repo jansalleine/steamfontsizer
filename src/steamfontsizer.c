@@ -155,6 +155,7 @@ int main( int argc, char *argv[] )
         fclose( outfile );
     }
     fclose( infile );
+    free( infile_name );
     exit( EXIT_SUCCESS );
 }
 
@@ -212,7 +213,7 @@ char *newstr( char *initial_str )
     return new_str;
 }
 
-char * string_replace( char *search, char *replace, char *string )
+char *string_replace( char *search, char *replace, char *string )
 {
     char *tempstring, *searchstart;
     int len = 0;
@@ -223,7 +224,7 @@ char * string_replace( char *search, char *replace, char *string )
         return string;
     }
 
-    tempstring = (char*) malloc( strlen( string ) * sizeof( char ) );
+    tempstring = (char*) malloc( ( strlen( string ) * sizeof( char ) ) + 1 );
     if ( tempstring == NULL )
     {
         return NULL;
